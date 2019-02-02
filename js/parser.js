@@ -15,8 +15,9 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function(){
 	  if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
-		var textlines = xmlhttp.responseText.split('\r\n');
+		var textlines = xmlhttp.responseText.split('\n');
 		var csvlines = textlines.map(x => Csv.parse(x));
+		console.log(csvlines);
 		process(csvlines);
 		}
 	};
@@ -92,7 +93,7 @@ var MultiItem = function(itemarr){
 		var uniqueNames = [];
 		
 		itemarr.forEach(function(currentName, authorID){
-			if(!currentName || currentName == "-")
+			if(!currentName.trim() || currentName == "-")
 				return;
 			
 			var exItem = uniqueNames.find(it => it.itemtext == currentName);
