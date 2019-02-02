@@ -1,22 +1,59 @@
-.container {
+html {
+    height: 100vh;
+	overflow:hidden;
+}
+
+body {
+    height: 100vh;
+}
+
+.parent {
   background-color: black;
   color: #00BFFF;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
+  width: 95%;
+  height: 95%;
+  overflow: hidden;
+}
+
+.overlay {
+  color: grey;
+  white-space: nowrap;
+  font-size: 14px;
+  position: fixed;
+  top: 20%;
+  right: 0px;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.textbox {
+	height: 20%;
+	width: 100%;
+	color: #FFFFFF;
+}
+
+.viewbox {
+	height: 80%;
+	width: 100%;
+}
+
+.csiga {
+	border: 5px dotted rgba(204, 204, 204, 0.1);
+}
+
+.csirke {
+  height: 100%;
+  width: 100%;
+  border: 2px solid green;
+  overflow: visible;
 }
 
 .panzoom {
-  position: absolute;
-  width: 800px;
-  height: 250px;
   background-color: rgba(0, 0, 255, 0.1);
-  left: 50px;
-  top: 20px;
+  height: 100%;
+  width: 100%;
+  border: 2px solid red;
   overflow: visible;
-  border: 5px dotted rgba(204, 204, 204, 0.1);
 }
 
 .diagram {
@@ -55,14 +92,6 @@
   stroke: #00BFFF;
 }
 
-.hint {
-  position: absolute;
-  color: grey;
-  left: 100%;
-  top: -24px;
-  white-space: nowrap;
-  font-size: 14px;
-}
 .hint h4 {
   margin-left: 15px;
 }
@@ -87,7 +116,8 @@
 }
 .dotc0{background-color:#c0c0c0}
 .dotc1{background-color:#808080}
-.dotc2{background-color:#000000}
+/*.dotc2{background-color:#000000}*/
+.dotc2{background-color:#3070ff}
 .dotc3{background-color:#ff0000}
 .dotc4{background-color:#800000}
 .dotc5{background-color:#ffff00}
