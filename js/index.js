@@ -6,15 +6,6 @@ var $container = $(".container");
 $diagram = $container.find(".diagram");
 var $panzoom = null;
 
-var links = [
-  { from: "i0", to: "i1" },
-  { from: "i1", to: "i11" },
-  { from: "i1", to: "i12" },
-  { from: "i0", to: "i2" },
-  { from: "i2", to: "i21" },
-  { from: "i0", to: "i3" },
-];
-
 jsPlumb.ready(function() {
   plumb = jsPlumb.getInstance({
     PaintStyle: { strokeWidth: 1 },

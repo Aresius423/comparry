@@ -12,12 +12,14 @@
 <body>
   <div class="container">
   <div class="panzoom">
-    <div class="diagram">
-	  <script src="js/parser.js"></script>
+    <script src="js/parser.js"></script>
+	  <script src="http://wzrd.in/standalone/uuid%2Fv4@latest"></script>
       <script>
 	    var parser = new Parser();
-		parser.test();
+		var links = parser.links;
 	  </script>
+    <div class="diagram" id="loaded-diagram">
+	  loading...
     </div>
     <div class="hint">
       <h4>Hint</h4>
