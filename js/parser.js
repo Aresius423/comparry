@@ -9,7 +9,7 @@
 // - 
 // - categories are unique
 // - elements are unique
-// - cells don't contain newlines
+// - rows are separated by \r\n, in-cell linebreaks are marked with \n
 // - if author n doesn't define element m, the cell contains a hyphen, or whitespaces only
 // - the author cell's first word can be used to identify the book
 
@@ -17,7 +17,7 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function(){
 	  if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
-		var textlines = xmlhttp.responseText.split('\n');
+		var textlines = xmlhttp.responseText.split('\r\n');
 		var csvlines = textlines.map(x => Csv.parse(x));
 		process(csvlines);
 		}
@@ -36,6 +36,8 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	
 	function get_uuid(array, name){
 		var found = array.find(elem => elem.itemtext == name);
+		if(!found)
+			console.log("couldn't find " + name + " in " + array.map(x => x.itemtext).join("-"));
 		return found ? found.id : undefined;
 	}
 	
@@ -48,27 +50,37 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	function process(csvlines){
 		authors = csvlines[0].slice(2);
 		toUniqueItem(new Set(csvlines.slice(1).map(x => x[0])), categories, 1);
-		toUniqueItem(new Set(csvlines.slice(1).map(x => x[1])), elems, 2);
 		
-		csvlines.slice(1).forEach(function(linedata){
-			//process data lines
+		categories.forEach(function(cat){
+			var categoryLines = csvlines.slice(1).filter(line => line[0] == cat.itemtext)
+			var subelems = [];
+			toUniqueItem(new Set(categoryLines.map(x => x[1])), subelems, 2);
+			elems = elems.concat(subelems);
 			
-			links.add({from: get_uuid(categories, linedata[0]), to: get_uuid(elems, linedata[1])});
-			var lineitems = MultiItem(linedata.slice(2)).separate();
-			items = items.concat(lineitems);
-			lineitems.forEach(it => links.add({from: get_uuid(elems, linedata[1]), to: it.id}));
-		});
+			categoryLines.forEach(function(linedata){
+				//process data lines for a single category
+				
+				links.add({from: cat.id, to: get_uuid(subelems, linedata[1])});
+				var lineitems = MultiItem(linedata.slice(2)).separate();
+				items = items.concat(lineitems);
+				lineitems.forEach(it => links.add({from: get_uuid(subelems, linedata[1]), to: it.id}));
+			});
+		});	
 		
 		categories.forEach(function(it, index){
 			var links_array = Array.from(links);
 			
-			var rank2 = links_array.filter(ln => it.id == ln.from).slice(-1)[0]
+			var rank2 = links_array.filter(ln => it.id == ln.from)[0]
 			if(!rank2)
 				return;
 			
-			var rank3 = links_array.filter(ln => rank2.to == ln.from).slice(-1)[0]
+			var rank3 = links_array.filter(ln => rank2.to == ln.from)[0]
 			if(!rank3)
+			{
+				if(categories[index+1])
+					links.add({from: rank2.to, to: categories[index+1].id, invisible: true});
 				return;
+			}
 			
 			if(categories[index+1])
 				links.add({from: rank3.to, to: categories[index+1].id, invisible: true});
@@ -96,9 +108,6 @@ var DotPainter = function(index, alttext=""){
 
 var Item = function(itemtext, authors=[""], rank=3) {
 	var id = uuidv4(Math.random());
-	
-	if(String(itemtext).includes("terz"))
-		console.log(itemtext + id);
 	
 	function authorText(authorNames=[""]){
 		return authors ? authors.map(x => DotPainter(x, authorNames[x])).join("") : "";

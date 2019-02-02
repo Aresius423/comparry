@@ -27,8 +27,8 @@ jsPlumb.ready(function() {
 	   anchors:["Bottom", "Top"],
        overlays:[["Arrow",{location:1,width:10, length:10}]],
      });
-	 //if(connection && link.invisible)
-		// connection.setVisible(false);
+	 if(connection && link.invisible)
+		 connection.setVisible(false);
   });
   var dg = new dagre.graphlib.Graph();
   dg.setGraph({nodesep:30,ranksep:30,marginx:50,marginy:50,rankdir:"TD",align:"UL"});
