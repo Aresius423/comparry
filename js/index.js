@@ -51,7 +51,10 @@ jsPlumb.ready(function() {
       var left = Math.round(node.x-node.width/2)+'px';
       $('#' + n).css({left:left,top:top});
     });
+  
   plumb.repaintEverything();
+  document.getElementById("loading-box").style.display="none";
+  
   _.defer(function(){
     $panzoom = $container.find('.panzoom').panzoom({
       minScale: minScale,

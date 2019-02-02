@@ -64,3 +64,26 @@
   margin-left: 0;
   color: #00BFFF;
 }
+
+.dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dotc0{background-color:#c0c0c0}
+.dotc1{background-color:#808080}
+.dotc2{background-color:#000000}
+.dotc3{background-color:#ff0000}
+.dotc4{background-color:#800000}
+.dotc5{background-color:#ffff00}
+.dotc6{background-color:#707030}
+.dotc7{background-color:#00ee00}
+.dotc8{background-color:#009000}
+.dotc9{background-color:#00eeee}
+.dotc10{background-color:#00a0a0}
+.dotc11{background-color:#0000ff}
+.dotc12{background-color:#000080}
+.dotc13{background-color:#ff00ff}
+.dotc14{background-color:#900090}
+

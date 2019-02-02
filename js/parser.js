@@ -6,9 +6,11 @@
 // category 1,element2, a1c1e2, a2c1e2,...
 // category 2,element1, a1c2e1, a2c2e1,...
 //
+// - 
 // - categories are unique
 // - elements are unique
-// - if author n doesn't define element m, the cell is either empty or contains a hyphen only
+// - cells don't contain newlines
+// - if author n doesn't define element m, the cell contains a hyphen, or whitespaces only
 // - the author cell's first word can be used to identify the book
 
 var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
@@ -17,7 +19,6 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	  if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
 		var textlines = xmlhttp.responseText.split('\n');
 		var csvlines = textlines.map(x => Csv.parse(x));
-		console.log(csvlines);
 		process(csvlines);
 		}
 	};
@@ -58,10 +59,15 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 			lineitems.forEach(it => links.add({from: get_uuid(elems, linedata[1]), to: it.id}));
 		});
 		
+		document.getElementById("author-box").innerHTML = 
+			authors.map(function(authorName, authorIndex){
+				return "<li>"+DotPainter(authorIndex, authorName)+authorName+"</li>";
+			}).join("\n");
+		
 		document.getElementById("loaded-diagram").innerHTML =
 			categories.map(x=>x.toDiv()).join("") +
 			elems.map(x=>x.toDiv()).join("") +
-			items.map(x=>x.toDiv()).join("");
+			items.map(x=>x.toDiv(authors)).join("");
 	}
 	
 	return {
@@ -69,15 +75,19 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	}
 };
 
+var DotPainter = function(index, alttext=""){
+	return "<span class=\"dot dotc" + index + "\" title=\""+alttext+"\"></span>";
+};
+
 var Item = function(itemtext, authors=[""]) {
 	var id = uuidv4(Math.random());
 	
-	function authorText(){
-		return authors ? authors.join(",") : "";
+	function authorText(authorNames=[""]){
+		return authors ? authors.map(x => DotPainter(x, authorNames[x])).join("") : "";
 	}
 	
-	function toDiv(){
-		return "<div id=\"" + id + "\" class=\"item\">" + itemtext + "\n" + authorText() + "</div>";
+	function toDiv(authorNames=[""]){
+		return "<div id=\"" + id + "\" class=\"item\">" + itemtext + "\n" + authorText(authorNames) + "</div>";
 	}
 	
 	return {
