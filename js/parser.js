@@ -21,6 +21,7 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 		}
 	};
 	xmlhttp.open("GET",path,true);
+	xmlhttp.overrideMimeType('text/xml; charset=iso-8859-1');
 	xmlhttp.send();
 
 	var authors = [];
@@ -53,7 +54,7 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 			links.add({from: get_uuid(categories, linedata[0]), to: get_uuid(elems, linedata[1])});
 			var lineitems = MultiItem(linedata.slice(2)).separate();
 			items = items.concat(lineitems);
-			lineitems.forEach(it => links.add({from: get_uuid(categories, linedata[0]), to: it.id}));
+			lineitems.forEach(it => links.add({from: get_uuid(elems, linedata[1]), to: it.id}));
 		});
 		
 		document.getElementById("loaded-diagram").innerHTML =

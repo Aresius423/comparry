@@ -12,7 +12,8 @@ jsPlumb.ready(function() {
     Anchors: [["Left","Right","Bottom"], ["Top","Bottom"]],
     Container: $diagram,
   });
-  _.each(links,function(link){
+  
+  links.forEach(function(link){
      plumb.connect({
        source:link.from,
        target:link.to,
