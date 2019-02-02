@@ -9,6 +9,7 @@
 // - 
 // - categories are unique
 // - elements are unique
+// - csv file is utf-8 encoded
 // - rows are separated by \r\n, in-cell linebreaks are marked with \n
 // - if author n doesn't define element m, the cell contains a hyphen, or whitespaces only
 // - the author cell's first word can be used to identify the book
@@ -23,7 +24,7 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 		}
 	};
 	xmlhttp.open("GET",path,true);
-	xmlhttp.overrideMimeType('text/xml; charset=iso-8859-1');
+	xmlhttp.overrideMimeType('text/xml; charset=utf-8');
 	xmlhttp.send();
 
 	var authors = [];
