@@ -44,16 +44,12 @@ body {
 .csirke {
   height: 100%;
   width: 100%;
-  border: 2px solid green;
-  overflow: visible;
 }
 
 .panzoom {
   background-color: rgba(0, 0, 255, 0.1);
-  height: 100%;
-  width: 100%;
-  border: 2px solid red;
-  overflow: visible;
+  height: 200000px;
+  width: 200000px;
 }
 
 .diagram {
