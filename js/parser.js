@@ -18,7 +18,7 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function(){
 	  if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
-		var textlines = xmlhttp.responseText.split('\r\n');
+		var textlines = xmlhttp.responseText.split('\r\n').filter(l => l.trim());
 		var csvlines = textlines.map(x => Csv.parse(x));
 		process(csvlines);
 		}
@@ -37,8 +37,6 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	
 	function get_uuid(array, name){
 		var found = array.find(elem => elem.itemtext == name);
-		if(!found)
-			console.log("couldn't find " + name + " in " + array.map(x => x.itemtext).join("-"));
 		return found ? found.id : undefined;
 	}
 	
