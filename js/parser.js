@@ -39,17 +39,17 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 		return found ? found.id : undefined;
 	}
 	
-	function toUniqueItem(src, dest){
+	function toUniqueItem(src, dest, rank){
 		src.forEach(function(name){
-			dest.push(new Item(name));
+			dest.push(new Item(name, [""], rank));
 		});
 	}
 	
 	function process(csvlines){
 		authors = csvlines[0].slice(2);
-		toUniqueItem(new Set(csvlines.slice(1).map(x => x[0])), categories);
-		toUniqueItem(new Set(csvlines.slice(1).map(x => x[1])), elems);
-			
+		toUniqueItem(new Set(csvlines.slice(1).map(x => x[0])), categories, 1);
+		toUniqueItem(new Set(csvlines.slice(1).map(x => x[1])), elems, 2);
+		
 		csvlines.slice(1).forEach(function(linedata){
 			//process data lines
 			
@@ -57,6 +57,21 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 			var lineitems = MultiItem(linedata.slice(2)).separate();
 			items = items.concat(lineitems);
 			lineitems.forEach(it => links.add({from: get_uuid(elems, linedata[1]), to: it.id}));
+		});
+		
+		categories.forEach(function(it, index){
+			var links_array = Array.from(links);
+			
+			var rank2 = links_array.filter(ln => it.id == ln.from).slice(-1)[0]
+			if(!rank2)
+				return;
+			
+			var rank3 = links_array.filter(ln => rank2.to == ln.from).slice(-1)[0]
+			if(!rank3)
+				return;
+			
+			if(categories[index+1])
+				links.add({from: rank3.to, to: categories[index+1].id, invisible: true});
 		});
 		
 		document.getElementById("author-box").innerHTML = 
@@ -79,15 +94,18 @@ var DotPainter = function(index, alttext=""){
 	return "<span class=\"dot dotc" + index + "\" title=\""+alttext+"\"></span>";
 };
 
-var Item = function(itemtext, authors=[""]) {
+var Item = function(itemtext, authors=[""], rank=3) {
 	var id = uuidv4(Math.random());
+	
+	if(String(itemtext).includes("terz"))
+		console.log(itemtext + id);
 	
 	function authorText(authorNames=[""]){
 		return authors ? authors.map(x => DotPainter(x, authorNames[x])).join("") : "";
 	}
 	
 	function toDiv(authorNames=[""]){
-		return "<div id=\"" + id + "\" class=\"item\">" + itemtext + "\n" + authorText(authorNames) + "</div>";
+		return "<div id=\"" + id + "\" class=\"item rank" + rank + "\">" + itemtext + "\n" + authorText(authorNames) + "</div>";
 	}
 	
 	return {

@@ -14,7 +14,7 @@ jsPlumb.ready(function() {
   });
   
   links.forEach(function(link){
-     plumb.connect({
+	   var connection = plumb.connect({
        source:link.from,
        target:link.to,
        connector: [ "Flowchart",
@@ -24,11 +24,14 @@ jsPlumb.ready(function() {
         }
        ],
        endpoints:["Blank","Blank"],
+	   anchors:["Bottom", "Top"],
        overlays:[["Arrow",{location:1,width:10, length:10}]],
      });
+	 //if(connection && link.invisible)
+		// connection.setVisible(false);
   });
   var dg = new dagre.graphlib.Graph();
-  dg.setGraph({nodesep:30,ranksep:30,marginx:50,marginy:50});
+  dg.setGraph({nodesep:30,ranksep:30,marginx:50,marginy:50,rankdir:"TD",align:"UL"});
   dg.setDefaultEdgeLabel(function() { return {}; });
   $container.find(".item").each(
     function(idx, node) {
