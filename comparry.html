@@ -12,12 +12,6 @@
 <body>
   <div class="container">
   <div class="panzoom">
-    <script src="js/parser.js"></script>
-	  <script src="http://wzrd.in/standalone/uuid%2Fv4@latest"></script>
-      <script>
-	    var parser = new Parser();
-		var links = parser.links;
-	  </script>
     <div class="diagram" id="loaded-diagram">
 	  loading...
     </div>
@@ -32,6 +26,12 @@
       </div>
   </div>
 </div>
+	<script src="js/parser.js"></script>
+	<script src="https://wzrd.in/standalone/uuid%2Fv4@latest"></script>
+	<script>
+		var parser = new Parser();
+		var links = parser.links;
+	</script>
 	<script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js'></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js'></script>
