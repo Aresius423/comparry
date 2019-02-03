@@ -63,7 +63,7 @@ td:nth-child(even) {background-color: rgba(64, 64, 255, 0.1);}
 }
 
 .scrollable {
-	overflow: scroll;
+	overflow: auto;
 }
 
 .overlay {
