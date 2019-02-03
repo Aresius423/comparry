@@ -137,6 +137,11 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 		})
 		document.getElementById("author-box").innerHTML = 
 			checkAdjustedAuthorRows.join("\n");
+			
+		filterAuthors.forEach(id => {
+			var colID = id+3;
+			$('td:nth-child('+colID+'),th:nth-child('+colID+')').hide()
+		});
 		
 		document.getElementById("loaded-diagram").innerHTML =
 			nonEmptyCategories.map(x=>x.toDiv()).join("") +
