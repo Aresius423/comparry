@@ -46,9 +46,19 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 		});
 	}
 	
+	function toTableItem(type, string){
+		return "<" + type + " class=\"tg-0lax\">"+string+"</" + type + ">"
+	}
+	
 	function process(csvlines){
 		authors = csvlines[0].slice(2);
 		toUniqueItem(new Set(csvlines.slice(1).map(x => x[0])), categories, 1);
+		
+		var tableHeader = [csvlines[0].map(e => toTableItem("th", e)).join("\n")];
+		var tableLines = csvlines.slice(1).map(
+				row => "<tr>\n\t" + row.map(e => toTableItem("td", e)).join("\n") + "\n</tr>"
+			);
+		var tableText = tableHeader.concat(tableLines).join("\n");
 		
 		categories.forEach(function(cat){
 			var categoryLines = csvlines.slice(1).filter(line => line[0] == cat.itemtext)
@@ -67,6 +77,8 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 		});	
 		
 		categories.forEach(function(it, index){
+			//add invisible edges to the graph for a vertical layout
+			
 			var links_array = Array.from(links);
 			
 			var rank2 = links_array.filter(ln => it.id == ln.from)[0]
@@ -74,16 +86,14 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 				return;
 			
 			var rank3 = links_array.filter(ln => rank2.to == ln.from)[0]
-			if(!rank3)
-			{
-				if(categories[index+1])
-					links.add({from: rank2.to, to: categories[index+1].id, invisible: true});
-				return;
-			}
+			
+			var lastChildNodeID = rank3 ? rank3.to : rank2.to;
 			
 			if(categories[index+1])
-				links.add({from: rank3.to, to: categories[index+1].id, invisible: true});
+				links.add({from: lastChildNodeID, to: categories[index+1].id, invisible: true});
 		});
+		
+		document.getElementById("loaded-data").innerHTML = tableText;
 		
 		document.getElementById("author-box").innerHTML = 
 			authors.map(function(authorName, authorIndex){

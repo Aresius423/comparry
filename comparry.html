@@ -1,59 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Hungarian sabre sources and techniques</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body bgcolor="black">
-  <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script> 
-  <script src="js/panzoom.js"></script> 
-  <script src="js/jquery.mousewheel.min.js"></script>
-  <section class="textbox">
-  <h1>
-    <font color="white">Panning and zooming with CSS3</font>
-  </h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-  sunt in culpa qui officia deserunt mollit anim id est laborum.</section>
-  <div class="hint overlay">
-    <h4>Sources</h4>
-    <div id="loading-box">
-      <h2>
-        <font color="red">loading...</font>
-      </h2>
+    <head>
+        <meta name="generator"
+        content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+        <title>Hungarian sabre sources and techniques</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body bgcolor="black">
+    <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script> 
+    <script src="js/panzoom.js"></script> 
+    <script src="js/jquery.mousewheel.min.js"></script>
+    <section class="textbox">
+    <h1>
+        <font color="white">Panning and zooming with CSS3</font>
+    </h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</section>
+	<div class="overlay">
+		<div class="tab">
+			<button class="tablinks active" onclick="openTab(event, 'focal')">Graph</button> 
+			<button class="tablinks" onclick="openTab(event, 'tabletab')">Data</button>
+		</div>
+	</div>
+    
+    <section id="focal" class="viewbox tabcontent">
+		<div class="hint overlay" style="top:25%;">
+        <h4>Sources</h4>
+        <div id="loading-box">
+            <h2>
+                <font color="red">loading...</font>
+            </h2>
+        </div>
+        <div style="margin-left: 2em">
+            <div id="author-box"></div>
+        </div>
+        <h4>Hint</h4>
+        <ul>
+            <li>Drag and drop to pan</li>
+            <li>Mouse wheel to zoom</li>
+        </ul>
     </div>
-    <div style="margin-left: 2em">
-      <div id="author-box"></div>
+        <div class="parent prettyborder">
+            <div class="container">
+                <div class="diagram panzoom" id="loaded-diagram"></div>
+            </div>
+        </div>
+    </section>
+    
+	<div id="tabletab" class="viewbox tabcontent scrollable default-invisible">
+        <table class="tg prettyborder" id="loaded-data">
+			
+		</table>
     </div>
-    <h4>Hint</h4>
-    <ul>
-      <li>Drag and drop to pan</li>
-      <li>Mouse wheel to zoom</li>
-    </ul>
-    <div class="tab">
-    <button class="tablinks active" onclick="openTab(event, 'focal')">Graph</button> 
-    <button class="tablinks" onclick="openTab(event, 'tabletab')">Data</button></div>
-  </div>
-  <section id="focal" class="viewbox tabcontent">
-    <div class="parent">
-      <div class="csirke">
-        <div class="diagram panzoom" id="loaded-diagram"></div>
-      </div>
-    </div>
-  </section>
-  <div id="tabletab" class="viewbox tabcontent default-invisible"></div>
-  <script src="js/parser.js"></script> 
-  <script src="https://wzrd.in/standalone/uuid%2Fv4@latest"></script> 
-  <script>
-              
-                var parser = new Parser();
-                var links = parser.links;
-  
-</script> 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js'></script> 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js'></script> 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.0.7/jsPlumb.min.js'></script> 
-  <script src='https://cdn.rawgit.com/cpettitt/dagre/e66c29b8/dist/dagre.min.js'></script> 
-  <script src='https://cdn.rawgit.com/YuriGor/jquery.panzoom/ignoreChildrensEvents/dist/jquery.panzoom.min.js'></script> 
-  <script src="js/index.js"></script></body>
+    
+	<script src="js/parser.js"></script> 
+    <script src="https://wzrd.in/standalone/uuid%2Fv4@latest"></script> 
+    
+	<script>		
+		var parser = new Parser();
+        var links = parser.links;
+	</script> 
+    
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js'></script> 
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js'></script> 
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.0.7/jsPlumb.min.js'></script> 
+    <script src='https://cdn.rawgit.com/cpettitt/dagre/e66c29b8/dist/dagre.min.js'></script> 
+    <script src='https://cdn.rawgit.com/YuriGor/jquery.panzoom/ignoreChildrensEvents/dist/jquery.panzoom.min.js'></script> 
+    <script src="js/index.js"></script></body>
 </html>
