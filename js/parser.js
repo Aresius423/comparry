@@ -56,7 +56,8 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	}
 	
 	function toAuthorRow(authorName, authorIndex){
-		return "<li>"+DotPainter(authorIndex, authorName)+authorName+"</li>";
+		var cbrow = "<input type='checkbox' id='authorcb" + authorIndex + "' class='authorcb' checked " + ">"
+		return "<li>"+ cbrow +DotPainter(authorIndex, authorName)+authorName+"</li>";
 	}
 	
 	function toTableItem(type, string){
@@ -144,7 +145,9 @@ var Item = function(itemtext, authors=[""], rank=3) {
 	}
 	
 	function toDiv(authorNames=[""]){
-		return "<div id=\"" + id + "\" class=\"item rank" + rank + "\">" + itemtext + "\n" + authorText(authorNames) + "</div>";
+		return authorNames.length ?
+			"<div id=\"" + id + "\" class=\"item rank" + rank + "\">" + itemtext + "\n" + authorText(authorNames) + "</div>"
+			: "";
 	}
 	
 	return {

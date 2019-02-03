@@ -36,10 +36,22 @@ function openTab(evt, tabid) {
           });
         })();
 		
+function gatherAuthorsToFilter(){
+	var retval = [];
+	var checkboxes = document.getElementsByClassName("authorcb");
+	for (i = 0; i < checkboxes.length; i++) {
+		if(!checkboxes[i].checked)
+			retval.push(i);
+	}
+	
+	console.log(retval);
+	return retval;
+}	
+	
 function filterPressed() {
 	document.getElementById("loaded-diagram").innerHTML = "";
 	plumb.reset();
-	parser.process([0]);
+	parser.process(gatherAuthorsToFilter());
 	setupConnections();
 	drawGraph();
 }
