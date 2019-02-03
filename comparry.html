@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="generator"
-    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
     <title>Hungarian sabre sources and techniques</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
@@ -17,27 +15,33 @@
   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
   in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
   sunt in culpa qui officia deserunt mollit anim id est laborum.</section>
-  <section id="focal" class="viewbox">
+  <div class="hint overlay">
+    <h4>Sources</h4>
+    <div id="loading-box">
+      <h2>
+        <font color="red">loading...</font>
+      </h2>
+    </div>
+    <div style="margin-left: 2em">
+      <div id="author-box"></div>
+    </div>
+    <h4>Hint</h4>
+    <ul>
+      <li>Drag and drop to pan</li>
+      <li>Mouse wheel to zoom</li>
+    </ul>
+    <div class="tab">
+    <button class="tablinks active" onclick="openTab(event, 'focal')">Graph</button> 
+    <button class="tablinks" onclick="openTab(event, 'tabletab')">Data</button></div>
+  </div>
+  <section id="focal" class="viewbox tabcontent">
     <div class="parent">
-      <div class="hint overlay">
-        <h4>Sources</h4>
-		<div id="loading-box">
-          <h2><font color=red>loading...</font></h2>
-        </div>
-        <div style="margin-left: 2em">
-          <div id="author-box"></div>
-        </div>
-        <h4>Hint</h4>
-        <ul>
-          <li>Drag and drop to pan</li>
-          <li>Mouse wheel to zoom</li>
-        </ul>
-      </div>
       <div class="csirke">
         <div class="diagram panzoom" id="loaded-diagram"></div>
       </div>
     </div>
   </section>
+  <div id="tabletab" class="viewbox tabcontent default-invisible"></div>
   <script src="js/parser.js"></script> 
   <script src="https://wzrd.in/standalone/uuid%2Fv4@latest"></script> 
   <script>
