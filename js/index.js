@@ -44,7 +44,6 @@ function gatherAuthorsToFilter(){
 			retval.push(i);
 	}
 	
-	console.log(retval);
 	return retval;
 }	
 	
