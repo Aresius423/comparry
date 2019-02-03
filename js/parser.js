@@ -20,6 +20,12 @@ var elems = [];
 var items = [];
 var links = new Set();
 
+Set.prototype.filter = function filter(f) {
+  var newSet = new Set();
+  for (var v of this) if(f(v)) newSet.add(v);
+  return newSet;
+};
+
 function resetData() {
 	authors = [];
 	categories = [];
@@ -85,21 +91,28 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 		
 		categories.forEach(function(cat){
 			var categoryLines = filteredLines.filter(line => line[0] == cat.itemtext)
-			var subelems = [];
-			toUniqueItem(new Set(categoryLines.map(x => x[1])), subelems, 2);
-			elems = elems.concat(subelems);
 			
 			categoryLines.forEach(function(linedata){
 				//process data lines for a single category
 				
-				links.add({from: cat.id, to: get_uuid(subelems, linedata[1])});
+				
 				var lineitems = MultiItem(linedata.slice(2)).separate();
-				items = items.concat(lineitems);
-				lineitems.forEach(it => links.add({from: get_uuid(subelems, linedata[1]), to: it.id}));
+				if(lineitems.length){
+					var subelem = new Item(linedata[1], [], 2);
+					elems.push(subelem);
+					links.add({from: cat.id, to: subelem.id}); //cat -> elem
+					items = items.concat(lineitems);
+					lineitems.forEach(it => links.add({from: subelem.id, to: it.id}));
+				}				
 			});
-		});	
+		});
+
+		var nonEmptyCategories = categories.filter(categoryItem => {
+			var z = links.filter(ln => ln.from == categoryItem.id);
+			return(z.size);
+		});
 		
-		categories.forEach(function(it, index){
+		nonEmptyCategories.forEach(function(it, index){
 			//add invisible edges to the graph for a vertical layout
 			
 			var links_array = Array.from(links);
@@ -112,8 +125,8 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 			
 			var lastChildNodeID = rank3 ? rank3.to : rank2.to;
 			
-			if(categories[index+1])
-				links.add({from: lastChildNodeID, to: categories[index+1].id, invisible: true});
+			if(nonEmptyCategories[index+1])
+				links.add({from: lastChildNodeID, to: nonEmptyCategories[index+1].id, invisible: true});
 		});
 		
 		document.getElementById("loaded-data").innerHTML = tableText;
@@ -122,7 +135,7 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 			authors.map(toAuthorRow).join("\n");
 		
 		document.getElementById("loaded-diagram").innerHTML =
-			categories.map(x=>x.toDiv()).join("") +
+			nonEmptyCategories.map(x=>x.toDiv()).join("") +
 			elems.map(x=>x.toDiv()).join("") +
 			items.map(x=>x.toDiv(authors)).join("");
 	}
