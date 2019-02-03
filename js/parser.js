@@ -62,12 +62,12 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	}
 	
 	function toAuthorRow(authorName, authorIndex){
-		var cbrow = "<input type='checkbox' id='authorcb" + authorIndex + "' class='authorcb' checked " + ">"
-		return "<li>"+ cbrow +DotPainter(authorIndex, authorName)+authorName+"</li>";
+		var cbrow = "<input type='checkbox' id='authorcb${authorIndex} ' class='authorcb' checked>"
+	return `<li>${cbrow}${DotPainter(authorIndex, authorName)}${authorName}</li>`;
 	}
 	
 	function toTableItem(type, string){
-		return "<" + type + " class=\"tg-0lax\">"+string+"</" + type + ">"
+		return `<${type} class=\"tg-0lax\">${string}</${type}>`;
 	}
 	
 	function process(filterAuthors = []){	
@@ -140,7 +140,7 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 			
 		filterAuthors.forEach(id => {
 			var colID = id+3;
-			$('td:nth-child('+colID+'),th:nth-child('+colID+')').hide()
+			$(`td:nth-child(${colID}),th:nth-child(${colID})`).hide()
 		});
 		
 		document.getElementById("loaded-diagram").innerHTML =
@@ -156,7 +156,7 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 };
 
 var DotPainter = function(index, alttext=""){
-	return "<span class=\"dot dotc" + index + "\" title=\""+alttext+"\"></span>";
+	return `<span class=\"dot dotc${index}\" title=\"${alttext}\"></span>`;
 };
 
 var Item = function(itemtext, authors=[""], rank=3) {
@@ -167,9 +167,10 @@ var Item = function(itemtext, authors=[""], rank=3) {
 	}
 	
 	function toDiv(authorNames=[""]){
+		// if every author belonging to this item is filtered out, it shouldn't be printed
 		return authorNames.length ?
-			"<div id=\"" + id + "\" class=\"item rank" + rank + "\">" + itemtext + "\n" + authorText(authorNames) + "</div>"
-			: "";
+			`<div id=\"${id}\" class=\"item rank${rank}\">${itemtext}\n${authorText(authorNames)}</div>`
+			: ``;
 	}
 	
 	return {
