@@ -160,7 +160,7 @@ var DotPainter = function(index, alttext=""){
 };
 
 var Item = function(itemtext, authors=[""], rank=3) {
-	var id = uuidv4(Math.random());
+	var id = uuid();
 	
 	function authorText(authorNames=[""]){
 		return authors ? authors.map(x => DotPainter(x, authorNames[x])).join("") : "";
