@@ -96,25 +96,27 @@ td:nth-child(even) {background-color: rgba(64, 64, 255, 0.1);}
   background-color: rgba(0, 0, 255, 0.4);
 }
 
-/* Style the buttons that are used to open the tab content */
-.tab button {
+button {
   color: white;
   background-color: rgba(60, 60, 255, 0.6);
   float: left;
   border: none;
   outline: none;
   cursor: pointer;
-  padding: 14px 16px;
   transition: 0.3s;
 }
 
+.tab button {
+  padding: 14px 16px;
+}
+
 /* Change background color of buttons on hover */
-.tab button:hover {
+button:hover {
   background-color: rgba(0, 0, 255, 0.5);
 }
 
 /* Create an active/current tablink class */
-.tab button.active {
+button.active {
   background-color: rgba(0, 0, 255, 0.4);
 }
 

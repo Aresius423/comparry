@@ -14,24 +14,33 @@
 // - if author n doesn't define element m, the cell contains a hyphen, or whitespaces only
 // - the author cell's first word can be used to identify the book
 
+var authors = [];
+var categories = [];
+var elems = [];
+var items = [];
+var links = new Set();
+
+function resetData() {
+	authors = [];
+	categories = [];
+	elems = [];
+	items = [];
+	links.clear();
+}
+
 var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
+	var csvlines = [];
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function(){
 	  if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
 		var textlines = xmlhttp.responseText.split('\r\n').filter(l => l.trim());
-		var csvlines = textlines.map(x => Csv.parse(x));
-		process(csvlines);
+		csvlines = textlines.map(x => Csv.parse(x));
+		process();
 		}
 	};
 	xmlhttp.open("GET",path,true);
 	xmlhttp.overrideMimeType('text/xml; charset=utf-8');
 	xmlhttp.send();
-
-	var authors = [];
-	var categories = [];
-	var elems = [];
-	var items = [];
-	var links = new Set();
 	
 	//helper functions
 	
@@ -46,22 +55,35 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 		});
 	}
 	
+	function toAuthorRow(authorName, authorIndex){
+		return "<li>"+DotPainter(authorIndex, authorName)+authorName+"</li>";
+	}
+	
 	function toTableItem(type, string){
 		return "<" + type + " class=\"tg-0lax\">"+string+"</" + type + ">"
 	}
 	
-	function process(csvlines){
+	function process(filterAuthors = []){	
+		resetData();
 		authors = csvlines[0].slice(2);
 		toUniqueItem(new Set(csvlines.slice(1).map(x => x[0])), categories, 1);
 		
+		var filteredLines = csvlines.slice(1);
+		if(filterAuthors.length)
+		{
+			filteredLines = csvlines.map(x => x.map(function(data, index){
+				return filterAuthors.includes(index-2) ? "" : data;
+			}));
+		}
+		
 		var tableHeader = [csvlines[0].map(e => toTableItem("th", e)).join("\n")];
-		var tableLines = csvlines.slice(1).map(
+		var tableLines = filteredLines.map(
 				row => "<tr>\n\t" + row.map(e => toTableItem("td", e)).join("\n") + "\n</tr>"
 			);
 		var tableText = tableHeader.concat(tableLines).join("\n");
 		
 		categories.forEach(function(cat){
-			var categoryLines = csvlines.slice(1).filter(line => line[0] == cat.itemtext)
+			var categoryLines = filteredLines.filter(line => line[0] == cat.itemtext)
 			var subelems = [];
 			toUniqueItem(new Set(categoryLines.map(x => x[1])), subelems, 2);
 			elems = elems.concat(subelems);
@@ -96,9 +118,7 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 		document.getElementById("loaded-data").innerHTML = tableText;
 		
 		document.getElementById("author-box").innerHTML = 
-			authors.map(function(authorName, authorIndex){
-				return "<li>"+DotPainter(authorIndex, authorName)+authorName+"</li>";
-			}).join("\n");
+			authors.map(toAuthorRow).join("\n");
 		
 		document.getElementById("loaded-diagram").innerHTML =
 			categories.map(x=>x.toDiv()).join("") +
@@ -107,7 +127,8 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 	}
 	
 	return {
-		links: links
+		links: links,
+		process: process
 	}
 };
 

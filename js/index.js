@@ -35,15 +35,17 @@ function openTab(evt, tabid) {
             });
           });
         })();
+		
+function filterPressed() {
+	document.getElementById("loaded-diagram").innerHTML = "";
+	plumb.reset();
+	parser.process([0]);
+	setupConnections();
+	drawGraph();
+}
 
-jsPlumb.ready(function() {
-  plumb = jsPlumb.getInstance({
-    PaintStyle: { strokeWidth: 1 },
-    Anchors: [["Left","Right","Bottom"], ["Top","Bottom"]],
-    parent: $diagram,
-  });
-  
-  links.forEach(function(link){
+function setupConnections(authorFilter = []){
+	links.forEach(function(link){
 	   var connection = plumb.connect({
        source:link.from,
        target:link.to,
@@ -60,6 +62,9 @@ jsPlumb.ready(function() {
 	 if(connection && link.invisible)
 		 connection.setVisible(false);
   });
+}
+
+function drawGraph(){	
   var dg = new dagre.graphlib.Graph();
   dg.setGraph({nodesep:30,ranksep:30,marginx:50,marginy:50,rankdir:"TD",align:"UL"});
   dg.setDefaultEdgeLabel(function() { return {}; });
@@ -86,5 +91,17 @@ jsPlumb.ready(function() {
     });
   
   plumb.repaintEverything();
+}
+		
+jsPlumb.ready(function() {
+  plumb = jsPlumb.getInstance({
+    PaintStyle: { strokeWidth: 1 },
+    Anchors: [["Left","Right","Bottom"], ["Top","Bottom"]],
+    parent: $diagram,
+  });
+  
+  setupConnections();
+  drawGraph();
+  
   document.getElementById("loading-box").style.display="none";
 });
