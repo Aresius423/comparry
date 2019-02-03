@@ -78,7 +78,7 @@ var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
 		var filteredLines = csvlines.slice(1);
 		if(filterAuthors.length)
 		{
-			filteredLines = csvlines.map(x => x.map(function(data, index){
+			filteredLines = csvlines.slice(1).map(x => x.map(function(data, index){
 				return filterAuthors.includes(index-2) ? "" : data;
 			}));
 		}
