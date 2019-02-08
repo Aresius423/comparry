@@ -34,7 +34,7 @@ function resetData() {
 	links.clear();
 }
 
-var Parser = function(path = "data/Hungarian_Sabre_sources_and_techiques.csv") {
+var Parser = function(path = "data/data_v_0.1.csv") {
 	var csvlines = [];
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function(){

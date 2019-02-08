@@ -15,6 +15,10 @@ tr {
 th:nth-child(even) {background-color: rgba(64, 64, 255, 0.1);}
 td:nth-child(even) {background-color: rgba(64, 64, 255, 0.1);}
 
+a {
+	color: #00BFFF;
+}
+
 .tg  {
 	border-collapse:collapse;
 	border-spacing:0;
