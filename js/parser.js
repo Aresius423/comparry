@@ -34,7 +34,7 @@ function resetData() {
 	links.clear();
 }
 
-var Parser = function(path = "data/data_v_0.1.csv") {
+var Parser = function(path = "data/data_v_1.0.csv") {
 	var csvlines = [];
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function(){
